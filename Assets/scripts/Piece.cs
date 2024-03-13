@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class piece : MonoBehaviour
 {
-    private char pieceId;
+    [SerializeField] private char pieceId;
+    public bool IsWhite;
     private Vector2 piecePosition;
     [SerializeField] private Grid_Manager grid;
+    [SerializeField] private Sprite[] PieceSpriteList;
     private List<Tile> Available_moves;
+    [SerializeField] private SpriteRenderer Renderer;
 
+
+    private void Start()
+    {
+        AssignSprite();
+    }
     public void GetAvailableMoves()
     {
         Vector2 TileLocation;
@@ -39,5 +47,38 @@ public class piece : MonoBehaviour
         }
     }
 
+    public void AssignSprite()
+    {
+        int SpriteIndex;
+        switch (pieceId)
+        {
+            case 'K': SpriteIndex = 0;
+                break;
+            case 'Q': SpriteIndex = 1;
+                break;
+            case 'R':
+                SpriteIndex = 2;
+                break;
+            case 'H':
+                SpriteIndex = 3;
+                break;
+            case 'B':
+                SpriteIndex = 4;
+                break;
+            case 'P':
+                SpriteIndex = 5;
+                break;
+            default :
+                SpriteIndex = 0;
+                break;
+        }
+        if (IsWhite)
+        {
+            SpriteIndex += 6;
+        }
+
+        Renderer.sprite = PieceSpriteList[SpriteIndex];
+    }
+    
 
 }

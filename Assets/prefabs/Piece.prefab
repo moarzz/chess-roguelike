@@ -97,4 +97,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7975df32afec9354a92b519a92215118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pieceId: 51
+  IsWhite: 0
   grid: {fileID: 0}
+  PieceSpriteList:
+  - {fileID: 21300000, guid: c9deeb233338c834aabe17eb3bc53013, type: 3}
+  - {fileID: 21300000, guid: b662fd91a3ebd9d458bd043367109004, type: 3}
+  - {fileID: 21300000, guid: a2b8928d9d1be5248b6ba40af9c963d1, type: 3}
+  - {fileID: 21300000, guid: 21f9ab7f8248a3a40940b9dec431d467, type: 3}
+  - {fileID: 21300000, guid: 8a598bbc59e48514fad4a7b1476fd9f3, type: 3}
+  - {fileID: 21300000, guid: 216efa51148d59f498e987c4a625582d, type: 3}
+  - {fileID: 21300000, guid: dfbd256955ed19142adf47487b1968d3, type: 3}
+  - {fileID: 21300000, guid: 76bc20e6c04d6584e8bead6e1fc1f7c4, type: 3}
+  - {fileID: 21300000, guid: 6cea2a6078935c04ca1cd4df6ed2e4ea, type: 3}
+  - {fileID: 21300000, guid: 0862f80d43d8ce949a3aa66af87b3ec5, type: 3}
+  - {fileID: 21300000, guid: 92772a1c26f363c47b520f3f7188f3dc, type: 3}
+  - {fileID: 21300000, guid: 90640332f19021e49911fbc0e6375c7f, type: 3}
+  Renderer: {fileID: 3178738822971464505}
