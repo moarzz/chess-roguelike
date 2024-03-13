@@ -7,7 +7,6 @@ public class Grid_Manager : MonoBehaviour
     [SerializeField] private int width, height;
     [SerializeField] private Tile TilePrefab ;
     [SerializeField] private Transform CamTransf;
-
     private Dictionary<Vector2, Tile> Tiles;
 
     private void Start()
@@ -17,10 +16,12 @@ public class Grid_Manager : MonoBehaviour
 
 
     void GenerateGrid() {
+        Tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < width; x++) {
             for ( int y = 0; y < height; y++) {
                 var spawnedTile = Instantiate(TilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
+                print("poopi");
 
                 var IsOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(IsOffset);
