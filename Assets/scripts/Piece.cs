@@ -9,7 +9,7 @@ public class piece : MonoBehaviour
     private Vector2 PiecePosition;
     [SerializeField] private Grid_Manager grid;
     [SerializeField] private Sprite[] PieceSpriteList;
-    public List<Tile> Available_moves;
+    public List<Tile> AvailableMoves;
     [SerializeField] private SpriteRenderer Renderer;
     private Grid_Manager Grid;
 
@@ -25,14 +25,13 @@ public class piece : MonoBehaviour
     }
     public void GetAvailableMoves()
     {
-        Vector2 TileLocation;
         switch (pieceId)
         {
             case 'K':
-                TileLocation = new Vector2(0, 0);
-                Available_moves.Add(grid.GetTileAtPos(TileLocation));
+                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" }, 1);
                 break;
         }
+        Grid.SetTilesAvailable(AvailableMoves);
     }
 
 

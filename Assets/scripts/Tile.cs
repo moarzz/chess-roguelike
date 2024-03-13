@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer Renderer;
     [SerializeField] private GameObject IsHovered;
     [SerializeField] private GameObject IsMovable;
+    private bool hovered = false;
     public bool occupied = false;
     public bool CanMoveHere = false;
     public piece PieceOnTile;
@@ -25,15 +26,45 @@ public class Tile : MonoBehaviour
 
     void OnMouseEnter()
     {
+        hovered = true;
         IsHovered.SetActive(true);
         Grid.UpdateHoveredTile(this, true);
     }
-
-
     void OnMouseExit()
     {
+        hovered = false;
         IsHovered.SetActive(false);
         Grid.UpdateHoveredTile(this, false);
+    }
+
+    void OnMouseDown()
+    {        
+        if (hovered)
+        {
+            if (Grid.SelectedPiece == null)
+            {
+                print("mouse down");
+                if (occupied)
+                {
+                    Grid.SelectedPiece = PieceOnTile;
+                    Grid.SelectedPiece.GetAvailableMoves();
+                    print("select piece");
+                }
+            }
+
+            else
+            {
+                if (CanMoveHere)
+                {
+                    Grid.SelectedPiece.MovePiece(GridPos);
+                    foreach (Tile tile in Grid.SelectedPiece.AvailableMoves)
+                    {
+                        tile.UpdateCanMoveOnThis(false);
+                    }
+                    Grid.SelectedPiece.AvailableMoves = null;
+                }
+            }
+        }
     }
 
     public void UpdateCanMoveOnThis(bool CanMove)

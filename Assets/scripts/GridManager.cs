@@ -11,38 +11,18 @@ public class Grid_Manager : MonoBehaviour
     [SerializeField] private Transform CamTransf;
     private Dictionary<Vector2, Tile> Tiles;
     private Tile HoveredTile;
-    private piece SelectedPiece;
+    public piece SelectedPiece;
 
-    private void Start()
+    void Start()
     {
         GenerateGrid();
+        piece x = Instantiate(PiecePrefab, new Vector3(2, 4), Quaternion.identity);
+        x.Init(this, new Vector3(2, 4));
+        GetTileAtPos(new Vector3(2, 4)).PieceOnTile = x;
+        GetTileAtPos(new Vector3(2, 4)).occupied = true;
     }
 
-    private void OnMouseDown()
-    {
-        if (SelectedPiece == null)
-        {
-            if (HoveredTile != null)
-            {
-                if (HoveredTile.PieceOnTile != null)
-                {
-                    SelectedPiece = HoveredTile.PieceOnTile;
-                    SelectedPiece.GetAvailableMoves();
-                    UpdateAvailableMoves(SelectedPiece.Available_moves);
-                }
-            }
-        }
-        else {
-            if (HoveredTile.CanMoveHere)
-            {
-                SelectedPiece.MovePiece(HoveredTile.GridPos);
-                foreach(Tile tile in SelectedPiece.Available_moves)
-                {
-                    tile.UpdateCanMoveOnThis(false);
-                }
-            }
-        }
-    }
+    
 
 
     public void UpdateHoveredTile(Tile updatedtile, bool hoverstart) /*if hoverstart is false, it means the tile is no longer being hovered*/
@@ -59,6 +39,7 @@ public class Grid_Manager : MonoBehaviour
 
     void GenerateGrid() {
         Tiles = new Dictionary<Vector2, Tile>();
+
         for (int x = 1; x < width + 1; x++) {
             for ( int y = 1; y < height + 1; y++) {
                 var spawnedTile = Instantiate(TilePrefab, new Vector3(x, y), Quaternion.identity);
@@ -96,6 +77,7 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
         List<Tile> tilesinline = new List<Tile>();
         Vector2 offset = new Vector2(0,0);
         bool LineOver = false;
+
         foreach (char a in direction)
         {
             if      (a == 'U')          {   offset.y = 1;}
@@ -111,6 +93,7 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
                 currentlength++;
                 currentlineend = currentlineend + offset;
                 tilesinline.Add(GetTileAtPos(currentlineend));
+
                 if (GetTileAtPos(currentlineend).occupied)
                 {
                     LineOver = true;
@@ -125,12 +108,23 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
         return tilesinline;
     }
 
-    private void UpdateAvailableMoves(List<Tile> availabletiles)
+    public void SetTilesAvailable(List<Tile> availabletiles)
     {
         foreach (Tile tile in availabletiles)
         {
-
+            tile.UpdateCanMoveOnThis(true);
         }
+    }
+
+    public List<Tile> GetLinesInDirections(Vector2 source, List<string> directions, int linelength)
+    {
+        List<Tile> tiles = new List<Tile>();
+
+        foreach(string direction in directions)
+        {
+            tiles.AddRange(GetAllTilesInLine(source, direction, linelength));
+        }
+        return tiles;
     }
 }
 
