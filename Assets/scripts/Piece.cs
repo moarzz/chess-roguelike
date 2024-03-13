@@ -6,13 +6,19 @@ public class piece : MonoBehaviour
 {
     [SerializeField] private char pieceId;
     public bool IsWhite;
-    private Vector2 piecePosition;
+    private Vector2 PiecePosition;
     [SerializeField] private Grid_Manager grid;
     [SerializeField] private Sprite[] PieceSpriteList;
-    private List<Tile> Available_moves;
+    public List<Tile> Available_moves;
     [SerializeField] private SpriteRenderer Renderer;
+    private Grid_Manager Grid;
 
 
+    public void Init(Grid_Manager grid, Vector2 initialposition)
+    {
+        Grid = grid;
+        PiecePosition = initialposition;
+    }
     private void Start()
     {
         AssignSprite();
@@ -34,16 +40,16 @@ public class piece : MonoBehaviour
     {
         if(grid.GetTileAtPos(MovePosition) == null)
         {
-            print("can't move piece to this tile");
+            print("Tile where piece wants to move doesn't exist");
         }
-        else if(grid.GetTileAtPos(MovePosition).IsOccupied())
+        else if(grid.GetTileAtPos(MovePosition).occupied)
         {
             print("eat this piece");
         }
         else
         {
             this.transform.position = new Vector3(MovePosition.x, MovePosition.y, -1);
-            grid.GetTileAtPos(MovePosition).SetPieceOnThis(this);
+            grid.GetTileAtPos(MovePosition).PieceOnTile = this;
         }
     }
 
