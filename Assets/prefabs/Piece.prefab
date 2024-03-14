@@ -97,9 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7975df32afec9354a92b519a92215118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceId: 75
+  pieceId: 78
   IsWhite: 0
-  grid: {fileID: 0}
   PieceSpriteList:
   - {fileID: 21300000, guid: c9deeb233338c834aabe17eb3bc53013, type: 3}
   - {fileID: 21300000, guid: b662fd91a3ebd9d458bd043367109004, type: 3}

@@ -249,6 +249,7 @@ MonoBehaviour:
   TilePrefab: {fileID: 1003999689865849483, guid: d2cfc8a603acc55409f629d711a86d5d, type: 3}
   PiecePrefab: {fileID: 6348530258855436173, guid: c535dc591f1a1704c8900f79aab9fbea, type: 3}
   CamTransf: {fileID: 519420032}
+  SelectedPiece: {fileID: 0}
 --- !u!4 &1698312739
 Transform:
   m_ObjectHideFlags: 0

@@ -41,29 +41,26 @@ public class Tile : MonoBehaviour
     {        
         if (hovered)
         {
-            if (Grid.SelectedPiece == null)
+            if (CanMoveHere)
             {
-                print("mouse down");
-                if (occupied)
+                foreach (Tile tile in Grid.SelectedPiece.AvailableMoves)
                 {
-                    Grid.SelectedPiece = PieceOnTile;
-                    Grid.SelectedPiece.GetAvailableMoves();
-                    print("select piece");
+                    tile.UpdateCanMoveOnThis(false);
                 }
+                Grid.SelectedPiece.AvailableMoves = null;
+                Grid.SelectedPiece.MovePiece(GridPos);
             }
-
             else
             {
-                if (CanMoveHere)
+                if (Grid.SelectedPiece == null)
                 {
-                    Grid.SelectedPiece.MovePiece(GridPos);
-                    foreach (Tile tile in Grid.SelectedPiece.AvailableMoves)
+                    if (occupied)
                     {
-                        tile.UpdateCanMoveOnThis(false);
+                        Grid.SelectedPiece = PieceOnTile;
+                        Grid.SelectedPiece.GetAvailableMoves();
                     }
-                    Grid.SelectedPiece.AvailableMoves = null;
                 }
-            }
+            }   
         }
     }
 
@@ -81,8 +78,17 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public Tile GetTileAtOffset(Vector2 offset)
+    public void UpdatePieceOnThis(piece piece, bool pieceenterstile)
     {
-        return Grid.GetTileAtPos(new Vector2(GridPos.x + offset.x, GridPos.y + offset.y));
+        if (pieceenterstile)
+        {
+            PieceOnTile = piece;
+            occupied = true;
+        }
+        else
+        {
+            PieceOnTile = null;
+            occupied = false;
+        }
     }
 }

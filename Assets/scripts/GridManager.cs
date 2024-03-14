@@ -17,9 +17,13 @@ public class Grid_Manager : MonoBehaviour
     {
         GenerateGrid();
         piece x = Instantiate(PiecePrefab, new Vector3(2, 4), Quaternion.identity);
-        x.Init(this, new Vector3(2, 4));
+        x.Init(this, new Vector3(2, 4), 'Q', true);
         GetTileAtPos(new Vector3(2, 4)).PieceOnTile = x;
         GetTileAtPos(new Vector3(2, 4)).occupied = true;
+        piece y = Instantiate(PiecePrefab, new Vector3(2, 7), Quaternion.identity);
+        y.Init(this, new Vector3(2, 7), 'P', false);
+        GetTileAtPos(new Vector3(2, 7)).PieceOnTile = y;
+        GetTileAtPos(new Vector3(2, 7)).occupied = true;
     }
 
     
@@ -51,7 +55,7 @@ public class Grid_Manager : MonoBehaviour
                 Tiles[new Vector2 (x, y)] = spawnedTile;
             }
         }
-        CamTransf.transform.position = new Vector3((float)width / 2 - 0.5f, ((float)height / 2) - 0.5f, -10);
+        CamTransf.transform.position = new Vector3((float)width / 2 + 0.5f, ((float)height / 2) + 0.5f, -10);
     }
 
     void GeneratePieces()
@@ -125,6 +129,18 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
             tiles.AddRange(GetAllTilesInLine(source, direction, linelength));
         }
         return tiles;
+    }
+
+    public bool PieceAtPos(Vector2 pos)
+    {
+        if (GetTileAtPos(pos).occupied)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
