@@ -130,7 +130,7 @@ public class Grid_Manager : MonoBehaviour
         return null;
     }
     
-    public List<Tile> GetAllTilesInLine(Vector2 source, string direction, int linelength) /* The source is where the line begins, usually where the piece is.   
+    public List<Tile> GetAllTilesInLine(Vector2 source, string direction, int linelength, bool iswhite) /* The source is where the line begins, usually where the piece is.   
 The direction is the lines orientation from the source. It is displayed by 1 or 2 letters.  U and D for up and down, L and R for right and left*/
     {
         int currentlength = 0;
@@ -153,11 +153,18 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
             {
                 currentlength++;
                 currentlineend = currentlineend + offset;
-                tilesinline.Add(GetTileAtPos(currentlineend));
 
                 if (GetTileAtPos(currentlineend).occupied)
                 {
+                    if (GetTileAtPos(currentlineend).PieceOnTile.IsWhite != iswhite) 
+                    {
+                        tilesinline.Add(GetTileAtPos(currentlineend));
+                    }
                     LineOver = true;
+                }
+                else
+                {
+                    tilesinline.Add(GetTileAtPos(currentlineend));
                 }
             }
             else
@@ -177,13 +184,13 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
         }
     }
 
-    public List<Tile> GetLinesInDirections(Vector2 source, List<string> directions, int linelength)
+    public List<Tile> GetLinesInDirections(Vector2 source, List<string> directions, int linelength, bool iswhite)
     {
         List<Tile> tiles = new List<Tile>();
 
         foreach(string direction in directions)
         {
-            tiles.AddRange(GetAllTilesInLine(source, direction, linelength));
+            tiles.AddRange(GetAllTilesInLine(source, direction, linelength, iswhite));
         }
         return tiles;
     }

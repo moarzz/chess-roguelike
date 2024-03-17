@@ -19,16 +19,15 @@ public class TestDll : MonoBehaviour
         print(bestMove);*/
         //Process process = Process.Start(@"C:\Users\xavie\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2");
 
-        ProcessStartInfo StartInfo = new ProcessStartInfo();
-        StartInfo.FileName = "cmd.exe"; //starts cmd window
-        StartInfo.CreateNoWindow = false;
+        ProcessStartInfo StartInfo = new ProcessStartInfo("stockfish-windows-x86-64-avx2.exe"); //starts stockfish
+        //StartInfo.CreateNoWindow = false;
         StartInfo.RedirectStandardInput = true;
         StartInfo.RedirectStandardOutput = true;
         StartInfo.UseShellExecute = false; //required to redirect
 
-        Process process = new Process();
-        process.StartInfo = StartInfo;
-        process.Start();
+        Process process = Process.Start(StartInfo);
+        //process.StartInfo = StartInfo;
+        //process.Start();
 
         StreamReader SR = process.StandardOutput;
         StreamWriter SW = process.StandardInput;
