@@ -1,34 +1,43 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.InteropServices;
+using Stockfish.NET;
+using System.Diagnostics;
+using System;
+using System.IO;
+using UnityEditor;
+using System.Linq;
+using System.Text;
 
 public class TestDll : MonoBehaviour
 {
-    [DllImport("MathLibraryTest")]
-    public static extern void fibonacci_init(ulong a, ulong b);
+    IStockfish stockfish;
 
-    [DllImport("MathLibraryTest")]
-    public static extern ulong fibonacci_current();
 
-    [DllImport("MathLibraryTest")]
-    public static extern bool fibonacci_next();
-    [DllImport("MathLibraryTest")]
-    public static extern ulong fibonacci_index();
-
-    // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
-        // Initialize a Fibonacci relation sequence.
-        fibonacci_init(1, 1);
-        // Write out the sequence values until overflow.
-        do
-        {
-            Debug.Log(fibonacci_index() + " : " + fibonacci_current());
-        } while (fibonacci_next());
-        // Report count of values written before overflow.
-        Debug.Log(fibonacci_index() + 1 +
-            " Fibonacci sequence values fit in an unsigned 64-bit integer.");
+        /*stockfish = new Stockfish.NET.Core.Stockfish(@"C:\Users\xavie\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2");
+        var bestMove = stockfish.GetBestMove();
+        print(bestMove);*/
+        //Process process = Process.Start(@"C:\Users\xavie\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2");
+
+        ProcessStartInfo StartInfo = new ProcessStartInfo();
+        StartInfo.FileName = "cmd.exe"; //starts cmd window
+        StartInfo.CreateNoWindow = false;
+        StartInfo.RedirectStandardInput = true;
+        StartInfo.RedirectStandardOutput = true;
+        StartInfo.UseShellExecute = false; //required to redirect
+
+        Process process = new Process();
+        process.StartInfo = StartInfo;
+        process.Start();
+
+        StreamReader SR = process.StandardOutput;
+        StreamWriter SW = process.StandardInput;
+        SW.WriteLine("@echo on");
+        SW.WriteLine("I did a poopi");
+
+        //StreamWriter sw = process.StandardInput;
+        // StreamReader sr = process.StandardOutput;
+        //sw.WriteLine("go");
+        //sw.Close();
     }
 }
