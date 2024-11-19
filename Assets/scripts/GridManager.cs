@@ -29,7 +29,7 @@ public class Grid_Manager : MonoBehaviour
         GetTileAtPos(new Vector3(2, 7)).occupied = true;*/
     }
 
-    
+
 
 
     public void UpdateHoveredTile(Tile updatedtile, bool hoverstart) //if hoverstart is false, it means the tile is no longer being hovered
@@ -130,8 +130,7 @@ public class Grid_Manager : MonoBehaviour
         return null;
     }
     
-    public List<Tile> GetAllTilesInLine(Vector2 source, string direction, int linelength) /* The source is where the line begins, usually where the piece is.   
-The direction is the lines orientation from the source. It is displayed by 1 or 2 letters.  U and D for up and down, L and R for right and left*/
+    public List<Tile> GetAllTilesInLine(Vector2 source, string direction, int linelength, bool IsWhite) // The source is where the line begins, usually where the piece is. The direction is the lines orientation from the source. It is displayed by 1 or 2 letters.  U and D for up and down, L and R for right and left
     {
         int currentlength = 0;
         Vector2 currentlineend = source;
@@ -153,12 +152,16 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
             {
                 currentlength++;
                 currentlineend = currentlineend + offset;
-                tilesinline.Add(GetTileAtPos(currentlineend));
 
                 if (GetTileAtPos(currentlineend).occupied)
                 {
                     LineOver = true;
+                    if (GetTileAtPos(currentlineend).PieceOnTile.IsWhite == IsWhite)
+                    {
+                        break;
+                    }
                 }
+                tilesinline.Add(GetTileAtPos(currentlineend));
             }
             else
             {
@@ -177,22 +180,26 @@ The direction is the lines orientation from the source. It is displayed by 1 or 
         }
     }
 
-    public List<Tile> GetLinesInDirections(Vector2 source, List<string> directions, int linelength)
+    public List<Tile> GetLinesInDirections(Vector2 source, List<string> directions, int linelength, bool IsWhite = true)
     {
         List<Tile> tiles = new List<Tile>();
 
         foreach(string direction in directions)
         {
-            tiles.AddRange(GetAllTilesInLine(source, direction, linelength));
+            tiles.AddRange(GetAllTilesInLine(source, direction, linelength, IsWhite));
         }
         return tiles;
     }
 
-    public bool PieceAtPos(Vector2 pos)
+    public bool PieceExistsAtPos(Vector2 pos)
     {
-        if (GetTileAtPos(pos).occupied)
+        if (GetTileAtPos(pos) != null)
         {
-            return true;
+            if (GetTileAtPos(pos).occupied)
+            {
+                return true;
+            }
+            else { return false; }
         }
         else
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class piece : MonoBehaviour
 {
     [SerializeField] private char pieceId;
-    private bool IsWhite;
+    public bool IsWhite;
     private Vector2 PiecePosition;
     [SerializeField] private Sprite[] PieceSpriteList;
     public List<Tile> AvailableMoves;
@@ -30,16 +30,16 @@ public class piece : MonoBehaviour
         switch (pieceId)
         {
             case 'K':
-                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" }, 1);
+                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" }, 1, IsWhite);
                 break;
             case 'Q':
-                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" }, 8);
+                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" }, 8, IsWhite);
                 break;
             case 'B':
-                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "UL", "UR", "DL", "DR" }, 8);
+                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "UL", "UR", "DL", "DR" }, 8, IsWhite);
                 break;
             case 'R':
-                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R" }, 8);
+                AvailableMoves = Grid.GetLinesInDirections(PiecePosition, new List<string> { "U", "D", "L", "R" }, 8, IsWhite);
                 break;
             case 'N':
                 List<Vector2> legaloffsets = new List<Vector2> {new Vector2 (1,2), new Vector2(-1, 2), new Vector2(1, -2), new Vector2(-1, -2), new Vector2(2, 1), new Vector2(-2, 1), new Vector2(2, -1), new Vector2(-2, -1), };
@@ -47,30 +47,42 @@ public class piece : MonoBehaviour
                 {
                     if (Grid.GetTileAtPos(PiecePosition + offset) != null)
                     {
-                        AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + offset));
+                        if (Grid.GetTileAtPos(PiecePosition + offset).occupied)
+                        {
+                            if (Grid.GetTileAtPos(PiecePosition + offset).PieceOnTile.IsWhite != IsWhite)
+                            {
+                                AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + offset));
+                            }
+                        }
+                        else
+                        {
+                            AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + offset));
+                        }
                     }
                 }
                 break;
             case 'P':
                 int pawndirection = IsWhite ?  1: -1;
-                if (!Grid.PieceAtPos(PiecePosition + new Vector2(0, pawndirection)))
+                if (!Grid.PieceExistsAtPos(PiecePosition + new Vector2(0, pawndirection)))
                 {
                     AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + new Vector2( 0, pawndirection )));
+                    if ((PiecePosition.y == 2 && pawndirection == 1) || (PiecePosition.y == 7 && pawndirection == -1)) 
+                    {
+                        AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + new Vector2(0, pawndirection*2)));
+                    }
                 }
-                if (Grid.PieceAtPos(PiecePosition + new Vector2(1, pawndirection)))
+                if (Grid.PieceExistsAtPos(PiecePosition + new Vector2(1, pawndirection)))
                 {
                     if (Grid.GetTileAtPos(PiecePosition + new Vector2(1, pawndirection)).PieceOnTile.IsWhite != IsWhite)
                     {
-                        print("lesgo2");
                         AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + new Vector2(1, pawndirection)));
                     }
                 }
-                else { print(PiecePosition + new Vector2(1, pawndirection)); }
-                if (Grid.PieceAtPos(PiecePosition + new Vector2(-1, pawndirection)))
+                if (Grid.PieceExistsAtPos(PiecePosition + new Vector2(-1, pawndirection)))
                 {
                     if (Grid.GetTileAtPos(PiecePosition + new Vector2(-1, pawndirection)).PieceOnTile.IsWhite != IsWhite)
                     {
-                        print(PiecePosition + new Vector2(-1, pawndirection));
+                        AvailableMoves.Add(Grid.GetTileAtPos(PiecePosition + new Vector2(-1, pawndirection)));
                     }
                 }
                 break;

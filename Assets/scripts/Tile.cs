@@ -50,8 +50,20 @@ public class Tile : MonoBehaviour
                 Grid.SelectedPiece.AvailableMoves = null;
                 Grid.SelectedPiece.MovePiece(GridPos);
             }
-            else
+            else if (occupied)
             {
+                if (Grid.SelectedPiece != null)
+                {
+                    foreach (Tile tile in Grid.SelectedPiece.AvailableMoves)
+                    {
+                        tile.UpdateCanMoveOnThis(false);
+                    }
+                    Grid.SelectedPiece.AvailableMoves = null;
+                }
+                Grid.SelectedPiece = PieceOnTile;
+                Grid.SelectedPiece.GetAvailableMoves();
+            }
+            /*{
                 if (Grid.SelectedPiece == null)
                 {
                     if (occupied)
@@ -60,7 +72,7 @@ public class Tile : MonoBehaviour
                         Grid.SelectedPiece.GetAvailableMoves();
                     }
                 }
-            }   
+            }*/   
         }
     }
 

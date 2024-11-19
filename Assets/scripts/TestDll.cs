@@ -9,7 +9,6 @@ using System.Text;
 
 public class TestDll : MonoBehaviour
 {
-    IStockfish stockfish;
 
 
     void Start() 
@@ -20,7 +19,7 @@ public class TestDll : MonoBehaviour
         //Process process = Process.Start(@"C:\Users\xavie\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2");
 
         ProcessStartInfo StartInfo = new ProcessStartInfo();
-        StartInfo.FileName = "cmd.exe"; //starts cmd window
+        //StartInfo.FileName = "cmd.exe"; //starts cmd window
         StartInfo.CreateNoWindow = false;
         StartInfo.RedirectStandardInput = true;
         StartInfo.RedirectStandardOutput = true;
@@ -28,7 +27,7 @@ public class TestDll : MonoBehaviour
 
         Process process = new Process();
         process.StartInfo = StartInfo;
-        process.Start();
+        Process.Start(@"C:\Users\xavie\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2");
 
         StreamReader SR = process.StandardOutput;
         StreamWriter SW = process.StandardInput;
